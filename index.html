@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waves Layout</title>
+    <style>
+        :root{
+            --main-color: #040038;
+            --second-color: #817FFF;
+        }
+
+        body, html, p{
+            width: 100%;
+            margin:0;
+            padding: 0;
+        }
+        main{
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background-color: #FFF;
+        }
+
+        @keyframes upScreen {
+            from{top:100%;}
+            to{top:19%;}
+        }
+
+        main::after{
+            position: absolute;
+            content: '';
+            height: 100%;
+            width: 100%;
+            background-color: var(--main-color);
+            top:100%;
+            animation: upScreen 5s forwards;
+            z-index: 9;
+        }
+
+        .wave{
+            width: 200%;
+            flex-shrink: 0;
+        }
+
+        @keyframes upWaves {
+            from{
+                bottom:0%;
+            }
+            to{
+                bottom: 80%;
+            }
+        }
+
+        .backWaves, .frontWaves{
+            position: absolute;
+            width: 100%;
+            display: flex;
+            overflow: hidden;
+            bottom: 0px;
+            animation: upWaves 5s forwards;
+        }
+
+        .backWaves .wave > path{
+            fill: var(--second-color);
+        }
+
+        @keyframes backWaves {
+            from {
+                margin-left:-300%;
+            }
+            to{
+                margin-left:-100%;
+            }
+        }
+
+        .backWaves .wave:nth-child(1){
+            margin-left: -100%;
+            animation: backWaves .8s 4 cubic-bezier(0,0,1,1),
+                         backWaves 2s 3.2s forwards cubic-bezier(.17,.98,1,1);
+        }
+
+        @keyframes frontWaves {
+            from {
+                margin-left:0%;
+            }
+            to{
+                margin-left:-200%;
+            }
+        }
+
+        .frontWaves .wave > path{
+            fill: var(--main-color);
+        }
+
+        .frontWaves .wave:nth-child(1){
+            margin-left: 0;
+            animation: frontWaves .8s 4 cubic-bezier(0,0,1,1),
+                        frontWaves 2s 3.2s forwards cubic-bezier(.17,.98,1,1);
+
+        }
+
+        
+        @keyframes showLogo {
+            from{
+                opacity:0;
+            }
+            to{
+                opacity: 1;
+            }
+        }
+
+        .polygons{
+            opacity: 0;
+            position: absolute;
+            margin-left:50%;
+            left: -30px;
+            margin-top: 200px;
+            z-index: 99;
+            animation: showLogo 3s 3s forwards;
+        }
+
+        .polygons > div{
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(133deg, #FFF, var(--second-color));
+            transform: rotate(45deg);
+            margin-top: var(--top);
+        }
+
+        .polygons > div::before{
+            content: '';
+            position: absolute;
+            margin:2px;
+            width: 55px;
+            height: 55px;
+            background: var(--main-color);
+        }
+
+    </style>
+
+</head>
+<body>
+    <main>
+        <div class="backWaves"></div>
+        <div class="frontWaves"></div>
+        <div class="polygons">
+            <div></div>
+            <div style="--top:-30px"></div>
+        </div>
+    </main>
+    <div id="svgTemplateWave" style="display: none;" >
+        <svg class="wave" viewBox="0 0 600 99" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.7613e-05 0.365387C120 -6.73794 163.279 92.0825 307.869 92.0825C452.459 92.0825 469.18 0.365402 600 0.365387C600 7.01509 600 99 600 99H1.7613e-05C1.7613e-05 99 -2.20162e-05 6.18352 1.7613e-05 0.365387Z" />
+            <path d="M1.7613e-05 0.365387C120 -6.73794 163.279 92.0825 307.869 92.0825C452.459 92.0825 469.18 0.365402 600 0.365387C600 7.01509 600 99 600 99H1.7613e-05C1.7613e-05 99 -2.20162e-05 6.18352 1.7613e-05 0.365387Z" />
+        </svg>
+    </div>
+    
+    <script>
+        const wave = document.querySelector("#svgTemplateWave > svg");
+        for(let i=0;i<2;i++){
+            document.querySelector(".backWaves").appendChild(wave.cloneNode(true))
+            document.querySelector(".frontWaves").appendChild(wave.cloneNode(true))
+        }
+    </script>
+</body>
+</html>
